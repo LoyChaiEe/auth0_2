@@ -1,5 +1,6 @@
 const cors = require('cors')
 const express = require('express')
+const { auth } = require("express-oauth2-jwt-bearer");
 require('dotenv').config();
 
 // importing Routers
@@ -20,6 +21,7 @@ const listingsRouter = new ListingsRouter(listingsController).routes()
 
 const PORT = process.env.PORT;
 const app = express();
+const checkJwt = auth();
 
 // Enable CORS access to this server
 app.use(cors());
@@ -29,6 +31,9 @@ app.use(express.json());
 
 // enable and use router
 app.use('/listings', listingsRouter)
+
+//
+app.use(auth());
 
 app.listen(PORT, () => {
   console.log(`Express app listening on port ${PORT}!`);
